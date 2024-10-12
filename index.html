@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avtorizatsiya</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: left; /* Выравнивание текста влево */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .back-button {
+            display: none; /* Sakkiz burchakli */
+            margin-top: 10px;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hisob yaratish</h1>
+        <form id="registerForm">
+            <input type="text" id="username" placeholder="Foydalanuvchi ismi" required>
+            <input type="email" id="email" placeholder="Elektron pochta" required>
+            <input type="password" id="password" placeholder="Parol" required>
+            <button type="submit">Ro'yxatdan o'tish</button>
+        </form>
+        <p>Allaqachon hisobingiz bormi? <a href="#" id="showLogin">Kirish</a></p>
+
+        <h1 style="display:none;">Kirish</h1>
+        <form id="loginForm" style="display:none;">
+            <input type="email" id="loginEmail" placeholder="Elektron pochta" required>
+            <input type="password" id="loginPassword" placeholder="Parol" required>
+            <button type="submit">Kirish</button>
+        </form>
+        <div class="back-button" id="backButton">
+            <button type="button" id="showRegister">Ro'yxatdan o'tishga qaytish</button>
+        </div>
+        <div class="footer">
+            Создатель: Артем<br>
+            Bog'lanish uchun: +998 999738120
+        </div>
+    </div>
+
+    <script>
+        const showLoginButton = document.getElementById('showLogin');
+        const registerForm = document.getElementById('registerForm');
+        const loginForm = document.getElementById('loginForm');
+        const backButton = document.getElementById('backButton');
+
+        // Foydalanuvchi ma'lumotlarini saqlash
+        showLoginButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            registerForm.style.display = 'none';
+            loginForm.style.display = 'block';
+            backButton.style.display = 'block';
+        });
+
+        document.getElementById('showRegister').addEventListener('click', () => {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            backButton.style.display = 'none';
+        });
+
+        // Ro'yxatdan o'tish
+        document.getElementById('registerForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Foydalanuvchi ma'lumotlarini localStorage ga saqlash
+            localStorage.setItem('userData', JSON.stringify({ username, email, password }));
+            alert('Ro\'yxatdan o\'tish muvaffaqiyatli! Endi kirishingiz mumkin.');
+            registerForm.reset(); // Formani tozalash
+        });
+
+        // Kirish
+        document.getElementById('loginForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const loginEmail = document.getElementById('loginEmail').value;
+            const loginPassword = document.getElementById('loginPassword').value;
+
+            // Ma'lumotlarni tekshirish
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData && userData.email === loginEmail && userData.password === loginPassword) {
+                alert('Kirish muvaffaqiyatli!');
+                window.location.href = 'magazin.html'; // Magazin sahifasiga o'tish
+            } else {
+                alert('Noto elektron pochta yoki parol.');
+            }
+        });
+    </script>
+</body>
+</html>
